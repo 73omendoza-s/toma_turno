@@ -1,0 +1,62 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Livewire;
+
+use App\Models\Area;
+use App\Models\Turno;
+use App\Services\TurnoService;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+use Livewire\Component;
+use Throwable;
+
+#[Layout('components.layouts.app')]
+#[Title('Recepción')]
+class Recepcion extends Component
+{
+    public ?int $ultimoId = null;
+
+    public ?string $error = null;
+
+    public function emitir(int $areaId, TurnoService $servicio): void
+    {
+        $this->error = null;
+
+        try {
+            $turno = $servicio->emitir($areaId, auth()->user());
+            $this->ultimoId = $turno->id;
+        } catch (Throwable $e) {
+            report($e);
+            $this->error = 'No se pudo emitir el turno. Intenta de nuevo.';
+
+            return;
+        }
+
+        // Imprime el ticket en la térmica (el navegador de recepción lo abre en una página oculta)
+        $this->dispatch('imprimir-ticket', url: route('ticket.imprimir', $turno->id));
+    }
+
+    /** Vuelve a imprimir el último ticket emitido (papel atascado, ticket perdido). */
+    public function reimprimir(): void
+    {
+        if ($this->ultimoId) {
+            $this->dispatch('imprimir-ticket', url: route('ticket.imprimir', $this->ultimoId));
+        }
+    }
+
+    public function render()
+    {
+        return view('livewire.recepcion', [
+            'areas' => Area::activas()->get(),
+            'direcciones' => DB::table('direcciones')->orderBy('orden')->orderBy('nombre')->get(),
+            'esperando' => Turno::hoy()->enEspera()
+                ->selectRaw('area_id, count(*) as total')
+                ->groupBy('area_id')
+                ->pluck('total', 'area_id'),
+            'ultimo' => $this->ultimoId ? Turno::with('area')->find($this->ultimoId) : null,
+        ]);
+    }
+}
