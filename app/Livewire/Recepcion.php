@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Models\Area;
+use App\Models\ImpresoraConfig;
 use App\Models\Turno;
+use App\Services\ImpresoraTicket;
 use App\Services\TurnoService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
@@ -35,15 +37,33 @@ class Recepcion extends Component
             return;
         }
 
-        // Imprime el ticket en la térmica (el navegador de recepción lo abre en una página oculta)
-        $this->dispatch('imprimir-ticket', url: route('ticket.imprimir', $turno->id));
+        $this->imprimirTurno($turno);
     }
 
     /** Vuelve a imprimir el último ticket emitido (papel atascado, ticket perdido). */
     public function reimprimir(): void
     {
-        if ($this->ultimoId) {
-            $this->dispatch('imprimir-ticket', url: route('ticket.imprimir', $this->ultimoId));
+        $this->error = null;
+
+        if ($this->ultimoId && ($turno = Turno::find($this->ultimoId))) {
+            $this->imprimirTurno($turno);
+        }
+    }
+
+    /** Directo a la térmica si está activada la impresión directa (módulo /admin/impresora); si no, el método anterior (iframe del navegador). */
+    protected function imprimirTurno(Turno $turno): void
+    {
+        if (! ImpresoraConfig::directa()) {
+            $this->dispatch('imprimir-ticket', url: route('ticket.imprimir', $turno->id));
+
+            return;
+        }
+
+        try {
+            app(ImpresoraTicket::class)->imprimir($turno);
+        } catch (Throwable $e) {
+            report($e);
+            $this->error = 'El turno se emitió, pero no se pudo imprimir. Revise la impresora y use "Reimprimir ticket".';
         }
     }
 

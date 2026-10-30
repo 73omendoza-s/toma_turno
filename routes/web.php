@@ -8,6 +8,7 @@ use App\Http\Controllers\TicketController;
 use App\Livewire\Admin\Banners;
 use App\Livewire\Admin\Catalogo;
 use App\Livewire\Admin\Configuracion;
+use App\Livewire\Admin\ConfigImpresora;
 use App\Livewire\Admin\ControlInstitucional;
 use App\Livewire\Admin\Usuarios;
 use App\Livewire\Estadisticas;
@@ -55,5 +56,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/configuracion', Configuracion::class)->name('admin.configuracion');
         Route::get('/banners', Banners::class)->name('admin.banners');
         Route::get('/institucional', ControlInstitucional::class)->name('admin.institucional');
+        Route::get('/impresora', ConfigImpresora::class)->name('admin.impresora');
     });
 });

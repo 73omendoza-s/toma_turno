@@ -12,7 +12,7 @@
         html { font-size: min(1.05vw, 1.9vh); }    /* escala con el menor entre ancho y alto: nunca se desborda */
         * { box-sizing: border-box; }
         body { margin: 0; height: 100vh; overflow: hidden; font-family: system-ui, "Segoe UI", sans-serif; background: #F3EBDD; color: var(--guinda-osc);
-               display: grid; grid-template-rows: 8rem minmax(0, 1fr) 8.5rem; gap: .6rem; }
+               display: grid; grid-template-rows: 8rem minmax(0, 1fr) 8.5rem; gap: .6rem; cursor: none; }
 
         /* ---------- Encabezado ---------- */
         header { background: linear-gradient(180deg, var(--guinda), var(--guinda-osc)); color: var(--texto);
@@ -27,26 +27,28 @@
         .fecha b { font-size: 2.2rem; display: block; }
 
         /* ---------- Centro ---------- */
-        .centro { display: grid; grid-template-columns: 2.1fr 1fr; gap: .8rem; padding: 0 .8rem; min-height: 0; }
+        .centro { display: grid; grid-template-columns: 1.7fr 1fr; gap: .8rem; padding: 0 .8rem; min-height: 0; }
         .actual { background: linear-gradient(160deg, var(--crema-1), var(--crema-2)); border: .2rem solid var(--dorado); border-radius: 1.2rem;
                   display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: .8rem; min-height: 0; overflow: hidden; }
-        .actual .etq { font-size: 3.2rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--guinda); }
-        .actual .folio { font-size: min(14rem, 25vh); font-weight: 900; line-height: 1; letter-spacing: .03em; color: var(--guinda-osc); margin: .4rem 0; }
-        .actual .destino { font-size: 3.2rem; font-weight: 700; color: var(--guinda-osc); }
-        .actual .destino span { color: var(--guinda); }
+        .actual .etq { font-size: 2.8rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--guinda); }
+        .actual .folio { font-size: min(12rem, 22vh); font-weight: 900; line-height: 1; letter-spacing: .03em; color: var(--guinda-osc); margin: .4rem 0; }
+        .actual .destino { line-height: 1.05; color: var(--guinda-osc); }
+        .actual .destino .area { font-size: 4.2rem; font-weight: 800; }
+        .actual .destino .vent { font-size: 6.4rem; font-weight: 900; color: var(--guinda); margin-top: .2rem; }
         .actual .vacio { font-size: 3.4rem; color: var(--guinda); opacity: .7; }
         .actual.nuevo { animation: parpadeo 1s ease-in-out 4; }
         @keyframes parpadeo { 50% { background: var(--dorado-claro); } }
 
         .lateral { background: var(--crema-1); border: .2rem solid var(--dorado); border-radius: 1.2rem; padding: 1rem 1.2rem; min-height: 0; overflow: hidden;
                    display: flex; flex-direction: column; }
-        .lateral h2 { margin: 0 0 .5rem; font-size: 2.2rem; color: var(--guinda-osc); }
-        #ultimos { flex: 1; min-height: 0; display: grid; grid-template-rows: repeat(4, minmax(0, 1fr)); gap: .5rem; }
+        .lateral h2 { margin: 0 0 .5rem; font-size: 2.8rem; color: var(--guinda-osc); }
+        /* El número de filas se define UNA sola vez en el JS (FILAS_ULTIMOS) y llega aquí por --filas */
+        #ultimos { flex: 1; min-height: 0; display: grid; grid-template-rows: repeat(var(--filas, 2), minmax(0, 1fr)); gap: .6rem; }
         .fila { background: linear-gradient(180deg, var(--guinda), var(--guinda-osc)); color: var(--texto); border-radius: .8rem; min-height: 0; overflow: hidden;
-                padding: .3rem 1rem; display: flex; flex-wrap: wrap; align-items: center; align-content: center; column-gap: 1rem; }
-        .fila b { font-size: 2.4rem; letter-spacing: .03em; white-space: nowrap; }
-        .fila span { font-size: 1.5rem; white-space: nowrap; }
-        .fila small { flex-basis: 100%; font-size: 1.15rem; line-height: 1.1; color: var(--dorado-claro); text-align: left; }
+                padding: .3rem 1.2rem; display: flex; flex-wrap: wrap; align-items: center; align-content: center; column-gap: 1rem; }
+        .fila b { font-size: 4rem; line-height: 1.05; letter-spacing: .03em; white-space: nowrap; }
+        .fila span { font-size: 3.6rem; line-height: 1.05; font-weight: 800; white-space: nowrap; }
+        .fila small { flex-basis: 100%; font-size: 2.4rem; line-height: 1.1; font-weight: 600; color: var(--dorado-claro); text-align: left; }
 
         /* ---------- Banners inferiores ---------- */
         .banners { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; padding: 0 .8rem .8rem; min-height: 0; }
@@ -54,15 +56,21 @@
                   background: linear-gradient(120deg, var(--guinda-osc), var(--guinda)); background-size: cover; background-position: center; background-repeat: no-repeat; }
         .banner.contener { background-color: var(--guinda-osc); background-size: contain; }
         .banner .texto { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: .6rem 1.6rem; overflow: hidden;
-                         background: linear-gradient(90deg, rgba(var(--guinda-osc-rgb), .94) 0%, rgba(var(--guinda-osc-rgb), .8) 55%, transparent 90%); color: var(--texto); text-shadow: 0 .1rem .3rem #000a; transition: opacity .6s; }
+                         background: linear-gradient(90deg, rgba(var(--guinda-osc-rgb), .94) 0%, rgba(var(--guinda-osc-rgb), .8) 55%, transparent 90%); color: var(--texto); text-shadow: 0 .1rem .3rem #000a; }
         .banner .texto b { font-size: 2rem; line-height: 1.1; }
         .banner .texto span { font-size: 1.35rem; line-height: 1.2; margin-top: .25rem; color: var(--dorado-claro); }
 
         #activar { position: fixed; inset: 0; background: #000c; color: var(--dorado-claro); font-size: 2.4rem; border: 0; cursor: pointer; z-index: 10; }
+
+        /* Aviso discreto cuando la pantalla pierde conexión con el servidor */
+        #offline { display: none; position: fixed; top: .6rem; left: 50%; transform: translateX(-50%); z-index: 5;
+                   background: #B00020; color: #fff; font-size: 1.5rem; font-weight: 700; padding: .3rem 1.4rem; border-radius: 1rem; }
+        #offline.visible { display: block; }
     </style>
 </head>
 <body>
     <button id="activar">🔊 Clic aquí para activar el sonido</button>
+    <div id="offline">Sin conexión con el servidor</div>
 
     <header>
         <div class="marca">
@@ -98,6 +106,13 @@
         const URL_INST = "{{ route('pantalla.institucional') }}";
         const VERSION_INST = "{{ \App\Support\Institucional::version() }}";
 
+        // Cuántos "últimos llamados" se muestran. Con letra grande para 4-5 m, 2 es lo recomendable.
+        // Solo se cambia aquí: el CSS toma el valor de --filas.
+        const FILAS_ULTIMOS = 2;
+        document.getElementById('ultimos').style.setProperty('--filas', FILAS_ULTIMOS);
+        // Fallos de red seguidos antes de mostrar el aviso "Sin conexión"
+        const FALLOS_PARA_AVISO = 3;
+
         // ------------------------------------------------------------------
         // BANNERS INFERIORES (se alternan de dos en dos cada 8 s)
         // Los banners se administran en /admin/banners; esta lista es solo de respaldo
@@ -113,7 +128,15 @@
             { imagen: 'banner6.jpg', titulo: 'Espacios públicos',            subtitulo: 'Parques y canchas',                                  ajuste: 'cubrir', ancho: 40 },
         ];
 
-        let sonido = false, ctx = null, tokenPrevio = null, primera = true, indice = 0;
+        let sonido = false, ctx = null, indice = 0;
+        let primera = true;              // la primera carga no anuncia nada
+        let vistos = new Set();          // tokens de llamados ya procesados
+        let cola = [], atendiendo = false;
+        let fallos = 0;
+
+        const esperar = ms => new Promise(r => setTimeout(r, ms));
+        // Tiempo límite para las peticiones: si la red se cuelga, cuenta como fallo y no se acumulan peticiones
+        const conLimite = ms => (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) ? AbortSignal.timeout(ms) : undefined;
 
         document.getElementById('activar').addEventListener('click', () => {
             sonido = true;
@@ -146,11 +169,50 @@
             o.start(); o.stop(ctx.currentTime + 0.9);
         }
 
+        // Devuelve una promesa que se resuelve cuando termina la voz (o a los 12 s por seguridad)
         function hablar(t) {
-            if (!('speechSynthesis' in window)) return;
-            const u = new SpeechSynthesisUtterance(`Turno ${t.folio.replace('-', ' ')}, pase al área de ${t.area}, ${t.ventanilla}`);
-            u.lang = 'es-MX'; u.rate = 0.9;
-            speechSynthesis.cancel(); speechSynthesis.speak(u);
+            return new Promise(resolve => {
+                if (!('speechSynthesis' in window)) return resolve();
+                const u = new SpeechSynthesisUtterance(`Turno ${t.folio.replace('-', ' ')}, pase al área de ${t.area}, ${t.ventanilla}`);
+                u.lang = 'es-MX'; u.rate = 0.9;
+                const limite = setTimeout(resolve, 12000);
+                u.onend = u.onerror = () => { clearTimeout(limite); resolve(); };
+                speechSynthesis.speak(u);
+            });
+        }
+
+        // ------------------------------------------------------------------
+        // COLA DE ANUNCIOS: si entran varios llamados juntos, se anuncian uno por uno
+        // ------------------------------------------------------------------
+        async function anunciar(t) {
+            const a = document.getElementById('actual');
+            a.classList.remove('nuevo'); void a.offsetWidth; a.classList.add('nuevo');
+            setTimeout(() => a.classList.remove('nuevo'), 4200);
+            pitido();
+            await esperar(700);
+            await hablar(t);
+            await esperar(500);
+        }
+
+        async function atender() {
+            if (atendiendo) return;
+            atendiendo = true;
+            try {
+                while (cola.length) await anunciar(cola.shift());
+            } finally {
+                atendiendo = false;
+            }
+        }
+
+        function procesarLlamados(lista) {
+            const nuevos = lista.filter(t => !vistos.has(t.token));
+            nuevos.forEach(t => vistos.add(t.token));
+            if (vistos.size > 500) vistos = new Set(lista.map(t => t.token));   // evita que crezca sin límite
+
+            if (primera || !sonido || !nuevos.length) return;
+            // La lista viene del más reciente al más antiguo: se anuncian en orden cronológico
+            cola.push(...nuevos.reverse());
+            atender();
         }
 
         function el(tag, clase, texto) {
@@ -167,35 +229,37 @@
                 cont.append(el('div', 'vacio', 'Esperando turnos…'));
             } else {
                 const destino = el('div', 'destino');
-                destino.append(document.createTextNode(d.actual.area + ' · '), el('span', '', d.actual.ventanilla));
+                destino.append(el('div', 'area', d.actual.area), el('div', 'vent', d.actual.ventanilla));
                 cont.append(el('div', 'etq', 'Turno'), el('div', 'folio', d.actual.folio), destino);
             }
 
             const lista = document.getElementById('ultimos');
             lista.replaceChildren();
-            d.ultimos.slice(0, 4).forEach(t => {
+            d.ultimos.slice(0, FILAS_ULTIMOS).forEach(t => {
                 const fila = el('div', 'fila');
                 fila.append(el('b', '', t.folio), el('span', '', t.ventanilla), el('small', '', t.area));
                 lista.append(fila);
             });
         }
 
+        function marcarConexion(ok) {
+            fallos = ok ? 0 : fallos + 1;
+            document.getElementById('offline').classList.toggle('visible', fallos >= FALLOS_PARA_AVISO);
+        }
+
         async function cargar() {
             try {
-                const r = await fetch(URL_DATOS, { headers: { 'Accept': 'application/json' }, cache: 'no-store' });
-                if (!r.ok) return;
+                const r = await fetch(URL_DATOS, { headers: { 'Accept': 'application/json' }, cache: 'no-store', signal: conLimite(5000) });
+                if (!r.ok) throw new Error('HTTP ' + r.status);
                 const d = await r.json();
                 pintar(d);
-
-                const token = d.actual ? d.actual.token : null;
-                if (!primera && sonido && token && token !== tokenPrevio) {
-                    const a = document.getElementById('actual');
-                    a.classList.add('nuevo');
-                    setTimeout(() => a.classList.remove('nuevo'), 4200);
-                    pitido(); setTimeout(() => hablar(d.actual), 700);
-                }
-                tokenPrevio = token; primera = false;
-            } catch (e) { /* sin red: reintenta en el siguiente ciclo */ }
+                procesarLlamados([d.actual, ...d.ultimos].filter(Boolean));
+                primera = false;
+                marcarConexion(true);
+            } catch (e) {
+                console.warn('No se pudieron cargar los turnos:', e);
+                marcarConexion(false);
+            }
         }
 
         function banner(id, c) {
@@ -203,18 +267,20 @@
             b.replaceChildren();
             b.classList.toggle('contener', c.ajuste === 'contener');
             b.style.backgroundImage = '';
+            const marca = b._seq = (b._seq || 0) + 1;   // identifica esta rotación
 
             if (c.imagen || c.url) {
                 // Solo se muestra si el archivo existe; si falta, queda el degradado
                 const url = c.url || (IMG + c.imagen);
                 const probe = new Image();
-                probe.onload = () => { b.style.backgroundImage = `url("${url}")`; };
+                // JSON.stringify entrecomilla y escapa la URL para que no rompa el estilo
+                probe.onload = () => { if (b._seq === marca) b.style.backgroundImage = `url(${JSON.stringify(url)})`; };   // si ya rotó, se ignora
                 probe.src = url;
             }
 
             // Texto encima: solo si se escribió un título (las imágenes oficiales suelen traer el suyo)
             if (c.titulo) {
-                const t = el('div', 'texto'); const a = c.ancho || 60;
+                const t = el('div', 'texto'); const a = Number(c.ancho) || 60;
                 t.style.paddingRight = (100 - a) + '%';
                 // El oscurecido termina donde empieza la foto, para no apagarla
                 t.style.background = `linear-gradient(90deg, rgba(var(--guinda-osc-rgb), .94) 0%, rgba(var(--guinda-osc-rgb), .8) ${a - 8}%, transparent ${a + 4}%)`;
@@ -227,21 +293,26 @@
         // Trae los banners activos de /admin/banners
         async function cargarBanners() {
             try {
-                const r = await fetch(URL_BANNERS, { headers: { 'Accept': 'application/json' }, cache: 'no-store' });
-                if (!r.ok) return;
+                const r = await fetch(URL_BANNERS, { headers: { 'Accept': 'application/json' }, cache: 'no-store', signal: conLimite(8000) });
+                if (!r.ok) throw new Error('HTTP ' + r.status);
                 const lista = await r.json();
                 if (Array.isArray(lista)) CONTENIDOS = lista;
-            } catch (e) { /* sin red: se conserva la lista actual */ }
+            } catch (e) {
+                console.warn('No se pudieron cargar los banners:', e);   // se conserva la lista actual
+            }
         }
 
         // Si cambia la identidad institucional (colores, logos, nombre), la pantalla se recarga sola
         async function revisarIdentidad() {
             try {
-                const r = await fetch(URL_INST, { headers: { 'Accept': 'application/json' }, cache: 'no-store' });
-                if (!r.ok) return;
+                const r = await fetch(URL_INST, { headers: { 'Accept': 'application/json' }, cache: 'no-store', signal: conLimite(8000) });
+                if (!r.ok) throw new Error('HTTP ' + r.status);
                 const d = await r.json();
-                if (d.version && d.version !== VERSION_INST) location.reload();
-            } catch (e) { /* sin red: se revisa en el siguiente ciclo */ }
+                // String(): el servidor puede mandar la versión como número y VERSION_INST siempre es texto
+                if (d.version != null && String(d.version) !== VERSION_INST && !atendiendo && !cola.length) location.reload();
+            } catch (e) {
+                console.warn('No se pudo revisar la identidad institucional:', e);
+            }
         }
 
         function rotar() {
@@ -263,7 +334,9 @@
         reloj(); setInterval(reloj, 1000);
         cargarBanners().finally(rotar); setInterval(rotar, 8000); setInterval(cargarBanners, 60000);
         setInterval(revisarIdentidad, 60000);
-        cargar(); setInterval(cargar, 3000);
+        (async function cicloDatos() {
+            try { await cargar(); } finally { setTimeout(cicloDatos, 3000); }
+        })();
     </script>
 </body>
 </html>
